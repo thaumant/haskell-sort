@@ -10,12 +10,11 @@ insertionSort xs =
 selectionSort :: Ord a => [a] -> [a]
 selectionSort [] = []
 selectionSort xs =
-    let smallestPos xs =
-            let iter p current []     = p
-                iter p current (y:ys) = let p' = if y < (xs !! p) then current else p
-                                        in  iter p' (current + 1) ys 
-            in iter 0 1 (tail xs) 
-        (left, right) = splitAt (smallestPos xs) xs
+    let leastIdx = iter fst rest
+            where (fst:rest) = zip [0..] xs
+                  iter (i,x) [] = i
+                  iter (i,x) ((i',x'):rest) = iter (if x' < x then (i',x') else (i,x)) rest
+        (left, right) = splitAt leastIdx xs
     in head right : selectionSort (left ++ tail right)
 
 
