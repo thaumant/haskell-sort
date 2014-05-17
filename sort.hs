@@ -1,7 +1,6 @@
 insertionSort :: Ord a => [a] -> [a]
 insertionSort xs =
     let sort []     ys = ys
-        sort (x:xs) [] = sort xs [x]
         sort (x:xs) ys = sort xs $ insert x ys
         insert x []     = [x]
         insert x (y:ys) = if x <= y then x:y:ys else y : insert x ys
