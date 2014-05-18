@@ -1,17 +1,14 @@
 insertionSort :: Ord a => [a] -> [a]
-insertionSort xs =
-    let sort []     ys = ys
-        sort (x:xs) ys = sort xs $ insert x ys
-        insert x []     = [x]
-        insert x (y:ys) = if x <= y then x:y:ys else y : insert x ys
-    in sort xs []
+insertionSort xs = foldr insert [] xs
+    where insert x []     = [x]
+          insert x (y:ys) = if x <= y then x:y:ys else y : insert x ys
 
 
 selectionSort :: Ord a => [a] -> [a]
 selectionSort [] = []
 selectionSort xs =
     let leastIdx = iter fst rest
-            where (fst:rest) = zip [0..] xs
+            where (fst:rest) = 
                   iter (i,x) [] = i
                   iter (i,x) ((i',x'):rest) = iter (if x' < x then (i',x') else (i,x)) rest
         (left, right) = splitAt leastIdx xs
