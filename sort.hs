@@ -1,3 +1,5 @@
+import Data.List (foldl1')
+
 insertionSort :: Ord a => [a] -> [a]
 insertionSort xs = foldr insert [] xs
     where insert x []     = [x]
@@ -7,12 +9,10 @@ insertionSort xs = foldr insert [] xs
 selectionSort :: Ord a => [a] -> [a]
 selectionSort [] = []
 selectionSort xs =
-    let leastIdx = iter fst rest
-            where (fst:rest) = zip [0..] xs
-                  iter (i,x) [] = i
-                  iter (i,x) ((i',x'):rest) = iter (if x' < x then (i',x') else (i,x)) rest
-        (left, right) = splitAt leastIdx xs
-    in head right : selectionSort (left ++ tail right)
+    let minPair xp@(_,x) yp@(_,y) = if x < y then xp else yp
+        leastIdx = fst $ foldl1' minPair $ zip [0..] xs
+        (left, (least:right)) = splitAt leastIdx xs
+    in least : selectionSort (left ++ right)
 
 
 mergeSort :: Ord a => [a] -> [a]
