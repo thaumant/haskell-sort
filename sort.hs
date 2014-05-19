@@ -1,4 +1,5 @@
-import Data.List (foldl1')
+import Data.List (foldl', foldl1')
+
 
 insertionSort :: Ord a => [a] -> [a]
 insertionSort xs = foldr insert [] xs
@@ -25,3 +26,12 @@ mergeSort xs  =
                                        else y : merge (x:xs) ys
         (left, right) = splitAt (length xs `div` 2) xs
     in merge (mergeSort left) (mergeSort right)
+
+
+bubbleSort :: Ord a => [a] -> [a]
+bubbleSort xs =
+    let bubble = foldr insert []
+        insert x [] = [x]
+        insert x (y:ys) = if x < y then x:y:ys else y:x:ys
+    in foldl' (\acc x -> bubble $ acc ++ [x]) [] xs
+
